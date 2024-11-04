@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 23)
 
 add_executable(FTL-Translator main.cpp
         trie.cpp
-        trie.h)
+        trie.h
+        token.cpp
+        token.h)
