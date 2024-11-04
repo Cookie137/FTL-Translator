@@ -7,4 +7,6 @@ add_executable(FTL-Translator main.cpp
         trie.cpp
         trie.h
         token.cpp
-        token.h)
+        token.h
+        lexical_analyzer.cpp
+        lexical_analyzer.h)
