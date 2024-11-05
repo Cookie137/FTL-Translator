@@ -1,8 +1,11 @@
-// Рекурсия для вычисления факториала
-function factorial(n: Int): Int {
-  if (n <= 1) {
-    return 1
-  } else {
-    return n * factorial(n - 1)
-  }
+function Factorial(Int n): Int {
+    if (n <= 1) {
+        return 1; // 0! = 1! = 1
+    } else {
+        return n * Factorial(n - 1);
+    }
 }
+
+Int n;
+Readln(n);
+Writeln(Factorial(n));
