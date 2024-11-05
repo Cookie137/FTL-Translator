@@ -1,4 +1,4 @@
-#include "lexical_analyzer.h"
+#include "../include/lexical_analyzer.h"
 #include <iostream>
 #include <vector>
 

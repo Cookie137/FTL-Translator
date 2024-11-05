@@ -3,10 +3,17 @@ project(FTL-Translator)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(FTL-Translator main.cpp
-        trie.cpp
-        trie.h
-        token.cpp
-        token.h
-        lexical_analyzer.cpp
-        lexical_analyzer.h)
+set(SOURCE_FILES
+        src/main.cpp
+        src/trie.cpp
+        src/token.cpp
+        src/lexical_analyzer.cpp
+)
+
+set(HEADER_FILES
+        include/trie.h
+        include/token.h
+        include/lexical_analyzer.h
+)
+
+add_executable(FTL-Translator ${SOURCE_FILES} ${HEADER_FILES})
