@@ -23,6 +23,7 @@ class LexicalAnalyzer {
     void OPR();
     void PUN();
     void COM();
+    void BOOL();
 
     int program_size_, line_, column_;
     char *cursor_, *program_;

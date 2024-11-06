@@ -88,5 +88,11 @@ void LexicalAnalyzer::PUN() {
 }
 
 void LexicalAnalyzer::COM() {
-    
+
+}
+
+void LexicalAnalyzer::BOOL() {
+    if () {
+        
+    }
 }
