@@ -58,7 +58,6 @@ void LexicalAnalyzer::GetChar() {
 
 void LexicalAnalyzer::PushChar() {
     word_.push_back(symbol_);
-    column_ = cur_column_;
 }
 
 void LexicalAnalyzer::H() {
@@ -93,6 +92,7 @@ void LexicalAnalyzer::H() {
         H();
     } else {
         GetChar();
+        column_ = cur_column_;
         H();
     }
 }

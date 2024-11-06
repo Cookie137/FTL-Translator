@@ -20,6 +20,7 @@ class LexicalAnalyzer {
     void PushToken(TokenType tokenType) {
         tokens_.push_back(new Token(tokenType, word_, line_, column_));
         word_.clear();
+        column_ = cur_column_;
     }
 
     void H();
@@ -27,7 +28,6 @@ class LexicalAnalyzer {
     void NUM();
     void STRING();
     void OPERATOR();
-    void PUN();
     void COMMENT();
     void FLOAT_PART();
 

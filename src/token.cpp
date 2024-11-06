@@ -64,5 +64,7 @@ void Token::SetColumn(int column) {
 }
 
 void Token::PrintInfo() {
-    std::cout << value_ << "  - - - - - - - - - - - - - " << to_string(type_) << " " << line_ << ":" << column_ + 1 << std::endl;
+    std::cout << "================================" << '\n';
+    std::cout << "Value: " << value_ << '\n';
+    std::cout << "Type: " << to_string(type_) << " | Pos: [" << line_ << ":" << column_ << "]" << std::endl;
 }
