@@ -24,14 +24,15 @@ std::vector<Token*> LexicalAnalyzer::Tokenize(std::string program_file) {
         file.seekg(0, file.end);
         program_size_ = (int)file.tellg();
         file.seekg(0, file.beg);
-        program_ = new char[program_size_];
+        program_ = new char[program_size_ + 1];
+        program_[program_size_] = '\n';
         file.read(program_, program_size_);
         file.close();
     } catch (const std::exception& e) {
         throw std::runtime_error("Failed to open program file: " + program_file);
     }
     iter_ = 0;
-    line_ = column_ = 1;
+    line_ = column_ = cur_column_ = 1;
     cursor_ = program_;
     word_.clear();
     tokens_.clear();
@@ -52,10 +53,12 @@ void LexicalAnalyzer::GetChar() {
     symbol_ = *cursor_;
     ++cursor_;
     ++iter_;
+    ++cur_column_;
 }
 
 void LexicalAnalyzer::PushChar() {
     word_.push_back(symbol_);
+    column_ = cur_column_;
 }
 
 void LexicalAnalyzer::H() {
@@ -63,31 +66,30 @@ void LexicalAnalyzer::H() {
         return;
     }
     if (IsAlpha(symbol_)) {
-        // PushChar();
-        GetChar();
-        H();
-        // ID();
-    } else if (IsDigit(symbol_)) {
         PushChar();
         GetChar();
+        ID();
+    } else if (IsDigit(symbol_)) {
         NUM();
     } else if (symbol_ == '"') {
         GetChar();
         STRING();
     } else if (symbol_ == '=' || symbol_ == '*' || symbol_ == '/' || symbol_ == '%' ||
                symbol_ == '!' || symbol_ == '&' || symbol_ == '^' || symbol_ == '|' ||
-               symbol_ == '+' || symbol_ == '-' || symbol_ == '<' || symbol_ == '>') {
+               symbol_ == '+' || symbol_ == '-' || symbol_ == '<' || symbol_ == '>' || symbol_ == '.') {
         PushChar();
-        // PushToken(TokenType::OPERATOR);
-        // GetChar();
         OPERATOR();
-        // H();
-    } else if (symbol_ == ';' || symbol_ == ',' || symbol_ == ':' || symbol_ == '.' ||
+    } else if (symbol_ == ';' || symbol_ == ',' || symbol_ == ':' ||
                symbol_ == '(' || symbol_ == ')' || symbol_ == '[' || symbol_ == ']' ||
                symbol_ == '{' || symbol_ == '}') {
         PushChar();
         PushToken(TokenType::PUNCTUATOR);
         GetChar();
+        H();
+    } else if (symbol_ == '\n') {
+        GetChar();
+        ++line_;
+        column_ = cur_column_ = 1;
         H();
     } else {
         GetChar();
@@ -100,10 +102,15 @@ void LexicalAnalyzer::ID() {
         PushChar();
         GetChar();
         ID();
+    } else if (word_ == "true" || word_ == "false") {
+        PushToken(TokenType::LITERAL);
+        H();
     } else {
-        Token* token = new Token(TokenType::IDENTIFIER, word_, line_, column_);
-        tokens_.push_back(token);
-        word_.clear();
+        if (keywords_trie_->Contains(word_)) {
+            PushToken(TokenType::KEYWORD);
+        } else {
+            PushToken(TokenType::IDENTIFIER);
+        }
         H();
     }
 }
@@ -151,19 +158,29 @@ void LexicalAnalyzer::OPERATOR() {
     auto condidate = word_ + symbol_;
     if (condidate == "==" || condidate == "++" || condidate == ">=" ||
         condidate == "<=" || condidate == "+=" || condidate == "-=" || 
-        condidate == "*=" || condidate == "/="
+        condidate == "*=" || condidate == "/=" || condidate == "->" || condidate == "=>"
     ) {
         PushChar();
         GetChar();
     }
-    PushToken(TokenType::OPERATOR);
-    H();
+
+    if (condidate == "//") {
+        PushChar();
+        GetChar();
+        COMMENT();
+    } else {
+        PushToken(TokenType::OPERATOR);
+        H();
+    }
 }
 
-void LexicalAnalyzer::PUN() {
-
-}
-
-void LexicalAnalyzer::COM() {
-
+void LexicalAnalyzer::COMMENT() {
+    if (symbol_ != '\n') {
+        PushChar();
+        GetChar();
+        COMMENT();
+    } else {
+        PushToken(TokenType::COMMENT);
+        H();
+    }
 }

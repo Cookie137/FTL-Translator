@@ -28,8 +28,8 @@ std::string to_string(TokenType type) {
     }
 }
 
-Token::Token(TokenType type, std::string value, int line, int column) :
-             type_(type), value_(std::move(value)), line_(line), column_(column) {}
+Token::Token(TokenType type, std::string word, int line, int column): 
+    type_(type), value_(word), line_(line), column_(column) {}
 
 TokenType Token::GetType() {
     return type_;
@@ -47,10 +47,22 @@ int Token::GetColumn() {
     return column_;
 }
 
+void Token::SetType(TokenType type) {
+    type_ = type;
+}
+
+void Token::SetValue(std::string value) {
+    value_ = value;
+}
+
+void Token::SetLine(int line) {
+    line_ = line;
+}
+
+void Token::SetColumn(int column) {
+    column_ = column;
+}
+
 void Token::PrintInfo() {
-    std::cout << "================================" << '\n';
-    std::cout << "Type: " << to_string(type_) << '\n';
-    std::cout << "Value: " << value_ << '\n';
-    std::cout << "Line: " << line_ << '\n';
-    std::cout << "Column: " << column_ << '\n';
+    std::cout << value_ << "  - - - - - - - - - - - - - " << to_string(type_) << " " << line_ << ":" << column_ + 1 << std::endl;
 }

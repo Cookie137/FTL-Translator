@@ -1,2 +1,13 @@
-a += 1 
-a <= 1
+// DELETE запрос с middleware auth, logRequest и validateAdmin (удаление пользователя доступно только администратору)
+DELETE users.delete (auth, logRequest, validateAdmin) [userId: Int] {
+  200: {
+    ok: true,
+    message: String
+  }
+} {
+  let deleted = deleteUserById(userId)
+  match deleted {
+    True => return { ok: true, message: "User successfully deleted" }
+    False => throw NotFoundError { message: "User not found" }
+  }
+}
