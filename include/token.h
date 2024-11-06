@@ -11,8 +11,7 @@ enum class TokenType {
     OPERATOR,
     PUNCTUATOR,
     COMMENT,
-    ERROR,
-    UNKNOWN
+    ERROR
 };
 
 class Token {
