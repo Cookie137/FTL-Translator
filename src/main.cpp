@@ -8,9 +8,9 @@ int main() {
     std::cout.tie(nullptr);
     try {
         LexicalAnalyzer lexer("keywords.txt");
-        std::vector<Token> tokens = lexer.Tokenize("program.txt");
-        for (Token& token : tokens) {
-            token.PrintInfo();
+        std::vector<Token*> tokens = lexer.Tokenize("program.txt");
+        for (auto& token : tokens) {
+            token->PrintInfo();
         }
         return 0;
     } catch (const std::exception& e) {

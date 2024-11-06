@@ -9,13 +9,14 @@ class LexicalAnalyzer {
  public:
     LexicalAnalyzer(std::string keywords_file);
     ~LexicalAnalyzer();
-    std::vector<Token> Tokenize(std::string program_file);
+    std::vector<Token*> Tokenize(std::string program_file);
 
  private:
     bool IsAlpha(char c);
     bool IsDigit(char c);
-
     void GetChar();
+    void PushChar();
+
     void H();
     void ID();
     void NUM();
@@ -25,11 +26,11 @@ class LexicalAnalyzer {
     void COM();
     void BOOL();
 
-    int program_size_, line_, column_;
+    int program_size_, iter_, line_, column_;
     char *cursor_, *program_;
     char symbol_;
-    std::string token_;
-    std::vector<Token> parsed_tokens_;
+    std::string word_;
+    std::vector<Token*> tokens_;
     Trie* keywords_trie_;
 };
 
