@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <string>
+#include <set>
 #include <unordered_map>
 
 class Trie {
@@ -20,6 +21,7 @@ class Trie {
 
     void Delete(Node* v);
     Node* root_;
+    std::set<std::string> st_;
 };
 
 #endif //TRANSLATOR_TRIE_H
