@@ -25,7 +25,7 @@ class LexicalAnalyzer {
     void PUN();
     void COM();
 
-    int program_size_, iter_, line_, column_;
+    int program_size_, iter_, line_, column_, cur_column_;
     char *cursor_, *program_;
     char symbol_;
     std::string word_;

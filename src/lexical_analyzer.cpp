@@ -31,7 +31,7 @@ std::vector<Token*> LexicalAnalyzer::Tokenize(std::string program_file) {
         throw std::runtime_error("Failed to open program file: " + program_file);
     }
     iter_ = 0;
-    line_ = column_ = 1;
+    line_ = column_ = cur_column_ = 1;
     cursor_ = program_;
     word_.clear();
     tokens_.clear();
@@ -49,9 +49,13 @@ bool LexicalAnalyzer::IsDigit(char c) {
 }
 
 void LexicalAnalyzer::GetChar() {
+    if (iter_ == program_size_) {
+        throw std::logic_error("Kostyl");
+    }
     symbol_ = *cursor_;
     ++cursor_;
     ++iter_;
+    ++cur_column_;
 }
 
 void LexicalAnalyzer::PushChar() {
@@ -59,7 +63,6 @@ void LexicalAnalyzer::PushChar() {
 }
 
 void LexicalAnalyzer::H() {
-    //if (iter_ == )
     if (IsAlpha(symbol_)) {
         PushChar();
         GetChar();
@@ -84,7 +87,10 @@ void LexicalAnalyzer::H() {
         GetChar();
         PUN();
     } else if (symbol_ == '\n') {
-
+        GetChar();
+        ++line_;
+        column_ = cur_column_ = 1;
+        H();
     } else {
         GetChar();
         H();
@@ -96,14 +102,27 @@ void LexicalAnalyzer::ID() {
         PushChar();
         GetChar();
         ID();
+    } else if (word_ == "true" || word_ == "false") {
+        Token* token = new Token();
+        token->SetType(TokenType::LITERAL);
+        token->SetValue(word_);
+        token->SetLine(line_);
+        token->SetColumn(column_);
+        column_ = cur_column_;
+        tokens_.push_back(token);
+        word_.clear();
+        H();
     } else {
-        Token* token = new Token(TokenType::IDENTIFIER, word_, line_, column_);
-//        if (keywords_trie_->Contains()) {
-//
-//        } else {
-//
-//        }
-        // if trie ...
+        Token* token = new Token();
+        if (keywords_trie_->Contains(word_)) {
+            token->SetType(TokenType::KEYWORD);
+        } else {
+            token->SetType(TokenType::IDENTIFIER);
+        }
+        token->SetValue(word_);
+        token->SetLine(line_);
+        token->SetColumn(column_);
+        column_ = cur_column_;
         tokens_.push_back(token);
         word_.clear();
         H();

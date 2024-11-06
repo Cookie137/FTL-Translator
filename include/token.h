@@ -16,15 +16,15 @@ enum class TokenType {
 
 class Token {
  public:
-    Token(TokenType type, std::string value, int line, int column);
+    Token();
     TokenType GetType();
     std::string GetValue();
     int GetLine();
     int GetColumn();
     void SetType(TokenType type);
     void SetValue(std::string value);
-    void SetLine();
-    void
+    void SetLine(int line);
+    void SetColumn(int column);
     void PrintInfo();
 
  private:
