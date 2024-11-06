@@ -59,32 +59,36 @@ void LexicalAnalyzer::PushChar() {
 }
 
 void LexicalAnalyzer::H() {
-    //if (iter_ == )
+    if (symbol_ == '\0') {
+        return;
+    }
     if (IsAlpha(symbol_)) {
-        PushChar();
+        // PushChar();
         GetChar();
-        ID();
+        H();
+        // ID();
     } else if (IsDigit(symbol_)) {
         PushChar();
         GetChar();
         NUM();
     } else if (symbol_ == '"') {
         GetChar();
-        STR();
+        STRING();
     } else if (symbol_ == '=' || symbol_ == '*' || symbol_ == '/' || symbol_ == '%' ||
                symbol_ == '!' || symbol_ == '&' || symbol_ == '^' || symbol_ == '|' ||
-               symbol_ == '+' || symbol_ == '-') {
+               symbol_ == '+' || symbol_ == '-' || symbol_ == '<' || symbol_ == '>') {
         PushChar();
-        GetChar();
-        OPR();
+        // PushToken(TokenType::OPERATOR);
+        // GetChar();
+        OPERATOR();
+        // H();
     } else if (symbol_ == ';' || symbol_ == ',' || symbol_ == ':' || symbol_ == '.' ||
                symbol_ == '(' || symbol_ == ')' || symbol_ == '[' || symbol_ == ']' ||
-               symbol_ == '{' || symbol_ == '}' || symbol_ == '<' || symbol_ == '>') {
+               symbol_ == '{' || symbol_ == '}') {
         PushChar();
+        PushToken(TokenType::PUNCTUATOR);
         GetChar();
-        PUN();
-    } else if (symbol_ == '\n') {
-
+        H();
     } else {
         GetChar();
         H();
@@ -98,12 +102,6 @@ void LexicalAnalyzer::ID() {
         ID();
     } else {
         Token* token = new Token(TokenType::IDENTIFIER, word_, line_, column_);
-//        if (keywords_trie_->Contains()) {
-//
-//        } else {
-//
-//        }
-        // if trie ...
         tokens_.push_back(token);
         word_.clear();
         H();
@@ -111,15 +109,55 @@ void LexicalAnalyzer::ID() {
 }
 
 void LexicalAnalyzer::NUM() {
-
+    if (IsDigit(symbol_)) {
+        PushChar();
+        GetChar();
+        NUM();
+    } else if (symbol_ == '.') {
+        PushChar();
+        GetChar();
+        FLOAT_PART();
+    } else {
+        PushToken(TokenType::NUMBER);
+        H();
+    }
 }
 
-void LexicalAnalyzer::STR() {
-
+void LexicalAnalyzer::FLOAT_PART() {
+    if (IsDigit(symbol_)) {
+        PushChar();
+        GetChar();
+        FLOAT_PART();   
+    } else {
+        PushToken(TokenType::FLOAT);
+        H();
+    }
 }
 
-void LexicalAnalyzer::OPR() {
+void LexicalAnalyzer::STRING() {
+    if (symbol_ != '"') {
+        PushChar();
+        GetChar();
+        STRING();
+    } else {
+        PushToken(TokenType::STRING);
+        GetChar();
+        H();
+    }
+}
 
+void LexicalAnalyzer::OPERATOR() {
+    GetChar();
+    auto condidate = word_ + symbol_;
+    if (condidate == "==" || condidate == "++" || condidate == ">=" ||
+        condidate == "<=" || condidate == "+=" || condidate == "-=" || 
+        condidate == "*=" || condidate == "/="
+    ) {
+        PushChar();
+        GetChar();
+    }
+    PushToken(TokenType::OPERATOR);
+    H();
 }
 
 void LexicalAnalyzer::PUN() {
@@ -128,10 +166,4 @@ void LexicalAnalyzer::PUN() {
 
 void LexicalAnalyzer::COM() {
 
-}
-
-void LexicalAnalyzer::BOOL() {
-    if () {
-        
-    }
 }

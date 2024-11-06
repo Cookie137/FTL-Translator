@@ -17,14 +17,19 @@ class LexicalAnalyzer {
     void GetChar();
     void PushChar();
 
+    void PushToken(TokenType tokenType) {
+        tokens_.push_back(new Token(tokenType, word_, line_, column_));
+        word_.clear();
+    }
+
     void H();
     void ID();
     void NUM();
-    void STR();
-    void OPR();
+    void STRING();
+    void OPERATOR();
     void PUN();
     void COM();
-    void BOOL();
+    void FLOAT_PART();
 
     int program_size_, iter_, line_, column_;
     char *cursor_, *program_;

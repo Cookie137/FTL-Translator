@@ -78,3 +78,26 @@
 
 <return> → "return" [ <Выражение> ] “;”
 ```
+
+
+
+```
+<Program> -> {<Operator>}
+
+*<Operator>*:
+    <FunctionDefinition> |
+    <IfStatement> |
+    <ForStatement> |
+    <WhileStatement> |
+    <SwitchStatement> |
+    <Expression> |
+    <VariableDeclaration>
+
+
+*FunctionDefinition*:
+'function' '(' <FunctionParams> ')' [ <TypeDeclaration> ] '{'
+    {<Expression> | <VariableDeclaration>}
+'}'
+
+*Expression*:
+```

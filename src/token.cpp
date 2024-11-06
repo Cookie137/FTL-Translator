@@ -17,6 +17,12 @@ std::string to_string(TokenType type) {
             return "COMMENT";
         case TokenType::ERROR:
             return "ERROR";
+        case TokenType::NUMBER:
+            return "NUMBER";
+        case TokenType::FLOAT:
+            return "FLOAT";
+        case TokenType::STRING:
+            return "STRING";
         default:
             return "UNKNOWN";
     }
@@ -47,5 +53,4 @@ void Token::PrintInfo() {
     std::cout << "Value: " << value_ << '\n';
     std::cout << "Line: " << line_ << '\n';
     std::cout << "Column: " << column_ << '\n';
-    std::cout << "================================" << std::endl;
 }

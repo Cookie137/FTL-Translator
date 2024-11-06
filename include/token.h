@@ -11,7 +11,10 @@ enum class TokenType {
     OPERATOR,
     PUNCTUATOR,
     COMMENT,
-    ERROR
+    ERROR,
+    NUMBER,
+    FLOAT,
+    STRING,
 };
 
 class Token {
@@ -24,7 +27,6 @@ class Token {
     void SetType(TokenType type);
     void SetValue(std::string value);
     void SetLine();
-    void
     void PrintInfo();
 
  private:
