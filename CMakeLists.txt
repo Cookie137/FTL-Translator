@@ -8,12 +8,14 @@ set(SOURCE_FILES
         src/trie.cpp
         src/token.cpp
         src/lexical_analyzer.cpp
+        src/syntax_analyzer.cpp
 )
 
 set(HEADER_FILES
         include/trie.h
         include/token.h
         include/lexical_analyzer.h
+        include/syntax_analyzer.h
 )
 
 add_executable(FTL-Translator ${SOURCE_FILES} ${HEADER_FILES})
