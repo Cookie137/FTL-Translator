@@ -2,14 +2,7 @@
 
 Trie::Trie() : root_(new Node()) {}
 
-Trie::~Trie() {
-    Delete(root_);
-    root_ = nullptr;
-}
-
 void Trie::AddString(std::string& str) {
-    st_.insert(str);
-    return;
     Node* v = root_;
     for (char c : str) {
         if (!v->to[c]) {
@@ -21,7 +14,6 @@ void Trie::AddString(std::string& str) {
 }
 
 bool Trie::Contains(std::string& str) {
-    return st_.find(str) != st_.end();
     Node* v = root_;
     for (char c : str) {
         if (!v->to[c]) {
@@ -29,12 +21,5 @@ bool Trie::Contains(std::string& str) {
         }
         v = v->to[c];
     }
-    return true;
-}
-
-void Trie::Delete(Node* v) {
-    for (auto& [c, u] : v->to) {
-        Delete(u);
-    }
-    delete v;
+    return v->is_terminal;
 }

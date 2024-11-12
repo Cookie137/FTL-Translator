@@ -1,4 +1,5 @@
-// DELETE запрос с middleware auth, logRequest и validateAdmin (удаление пользователя доступно только администратору)
+// DELETE query from middleware auth, logRequest and validateAdmin (deleting a user is only available to the administrator)
+
 DELETE users.delete (auth, logRequest, validateAdmin) [userId: Int] {
   200: {
     ok: true,
