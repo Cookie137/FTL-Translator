@@ -17,15 +17,21 @@ class LexicalAnalyzer {
     void GetChar();
     void PushChar();
 
+    void PushToken(TokenType tokenType) {
+        tokens_.push_back(new Token(tokenType, word_, line_, column_));
+        word_.clear();
+    }
+
     void H();
     void ID();
     void NUM();
-    void STR();
-    void OPR();
+    void STRING();
+    void OPERATOR();
     void PUN();
-    void COM();
+    void COMMENT();
+    void FLOAT_PART();
 
-    int program_size_, iter_, line_, column_;
+    int program_size_, iter_, line_, column_, cur_column_;
     char *cursor_, *program_;
     char symbol_;
     std::string word_;

@@ -8,6 +8,8 @@ Trie::~Trie() {
 }
 
 void Trie::AddString(std::string& str) {
+    st_.insert(str);
+    return;
     Node* v = root_;
     for (char c : str) {
         if (!v->to[c]) {
@@ -19,6 +21,7 @@ void Trie::AddString(std::string& str) {
 }
 
 bool Trie::Contains(std::string& str) {
+    return st_.find(str) != st_.end();
     Node* v = root_;
     for (char c : str) {
         if (!v->to[c]) {
