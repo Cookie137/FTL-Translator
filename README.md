@@ -1,7 +1,7 @@
 # FTL-Translator
 
 **Грамматика v2.0**
-```
+```scala
 Program = {Statement}
 
 Statement = FunctionDeclaration
