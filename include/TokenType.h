@@ -39,6 +39,8 @@ enum class TokenType {
   KW_AWAIT,
   KW_TRUE,
   KW_FALSE,
+  KW_UNDEFINED,
+  KW_NULL,
 
   // Операторы
   OP_ASSIGN,         // =
@@ -81,7 +83,9 @@ inline TokenType checkKeyword(const std::string& str) {
       "function",   "var",      "let",   "struct", "exception",
       "middleware", "endpoint", "apply", "if",     "else",
       "return",     "match",    "throw", "for",    "in",
-      "while",      "async",    "await", "true",   "false"};
+      "while",      "async",    "await", "true",   "false",
+      "undefined", "null",
+    };
 
   if (keywords.find(str) != keywords.end()) {
     if (str == "function") return TokenType::KW_FUNCTION;
@@ -104,6 +108,8 @@ inline TokenType checkKeyword(const std::string& str) {
     if (str == "await") return TokenType::KW_AWAIT;
     if (str == "true") return TokenType::KW_TRUE;
     if (str == "false") return TokenType::KW_FALSE;
+    if (str == "undefined") return TokenType::KW_UNDEFINED;
+    if (str == "null") return TokenType::KW_NULL;
   }
   return TokenType::Identifier;
 }
