@@ -267,7 +267,7 @@ Token Lexer::identifier() {
     while (isalnum(currentChar) || currentChar == '_') {
         readChar();
     }
-    std::string ident = input.substr(startPos, readPosition - position - 1);
+    std::string ident = input.substr(startPos, readPosition - startPos - 1);
     TokenType type = checkKeyword(ident);
     if (type == TokenType::KW_TRUE || type == TokenType::KW_FALSE) {
         return Token(TokenType::BooleanLiteral, ident, line, startColumn);
@@ -275,15 +275,35 @@ Token Lexer::identifier() {
     return Token(type, ident, line, startColumn);
 }
 
-// Обработка числовых литералов (целые числа)
+// Обработка числовых литералов (целые и вещественные числа)
 Token Lexer::number() {
     size_t startPos = position;
     int startColumn = column;
+    bool isFloat = false;
+
+    // Чтение целой части числа
     while (isdigit(currentChar)) {
         readChar();
     }
-    std::string numStr = input.substr(startPos, readPosition - position - 1);
-    return Token(TokenType::IntegerLiteral, numStr, line, startColumn);
+
+    // Проверка на наличие десятичной точки и дробной части
+    if (currentChar == '.' && isdigit(peekChar())) {
+        isFloat = true;
+        readChar(); // Пропустить точку
+        while (isdigit(currentChar)) {
+            readChar(); // Чтение дробной части
+        }
+    }
+
+    // Извлекаем строку для числа
+    std::string numStr = input.substr(startPos, readPosition - startPos - 1);
+
+    // Определение типа токена: IntegerLiteral или FloatLiteral
+    if (isFloat) {
+        return Token(TokenType::FloatLiteral, numStr, line, startColumn);
+    } else {
+        return Token(TokenType::IntegerLiteral, numStr, line, startColumn);
+    }
 }
 
 // Обработка строковых литералов

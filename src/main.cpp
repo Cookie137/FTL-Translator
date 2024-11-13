@@ -14,6 +14,8 @@ std::string tokenTypeToString(TokenType type) {
       return "Identifier";
     case TokenType::IntegerLiteral:
       return "IntegerLiteral";
+    case TokenType::FloatLiteral:
+      return "FloatLiteral";
     case TokenType::StringLiteral:
       return "StringLiteral";
     case TokenType::BooleanLiteral:
@@ -123,27 +125,27 @@ std::string tokenTypeToString(TokenType type) {
 
 int main() {
   std::string code = R"(
-        // Объявление функции суммы
+        // Declaring the sum function
         function sum(a: Int, b: Int): Int {
             return a + b;
         }
 
         /* 
-           Асинхронная функция для получения данных
+           Asynchronous function for receiving data
         */
         async function fetchData(url: String): Response {
             let response = await httpGet(url);
             return response;
         }
 
-        // Пример использования цикла for
+        // An example of using a for loop
         function printUsers(users: List<User>) {
             for (user in users) {
                 println("User: " + user.name + ", ID: " + user.id);
             }
         }
 
-        // Пример использования цикла while
+        // An example of using a while loop
         function countdown(start: Int) {
             let current = start;
             while (current > 0) {
@@ -153,27 +155,29 @@ int main() {
             println("Liftoff!");
         }
 
-        // Пример работы с объектным литералом
+        // An example of working with an object literal
         let user = {
             id: 1,
             name: "Alice",
             email: "alice@example.com"
         };
 
-        // Пример работы со списковым литералом
+        // An example of working with a list literal
         let numbers = [1, 2, 3, 4, 5];
 
-        // Пример работы с булевыми значениями
+        // An example of working with Boolean values
         let isActive = true;
         let isVerified = false;
 
-        // Пример использования throw
+        // An example of using throw
         function createUser(name: String) {
             if (name == "") {
                 throw BadRequestError { message: "Name cannot be empty" };
             }
-            // Создание пользователя
+            // Creating a user
         }
+
+        let x = {x: 123.999, y: {asad: "asdasd"}};
     )";
 
   Lexer lexer(code);

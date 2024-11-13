@@ -13,6 +13,7 @@ enum class TokenType {
   // Идентификаторы и литералы
   Identifier,
   IntegerLiteral,
+  FloatLiteral,
   StringLiteral,
   BooleanLiteral,
   ListLiteral,
@@ -80,11 +81,11 @@ enum class TokenType {
 // Функция для проверки, является ли строка ключевым словом
 inline TokenType checkKeyword(const std::string& str) {
   static const std::unordered_set<std::string> keywords = {
-      "function",   "var",      "let",   "struct", "exception",
-      "middleware", "endpoint", "apply", "if",     "else",
-      "return",     "match",    "throw", "for",    "in",
-      "while",      "async",    "await", "true",   "false",
-      "undefined", "null",
+      "function",   "var",      "let",   "struct",    "exception",
+      "middleware", "endpoint", "apply", "if",        "else",
+      "return",     "match",    "throw", "for",       "in",
+      "while",      "true",     "false", "undefined", "null",
+      "GET",        "POST"
     };
 
   if (keywords.find(str) != keywords.end()) {
