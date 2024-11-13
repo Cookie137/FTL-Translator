@@ -11,3 +11,23 @@ DELETE users.delete (auth, logRequest, validateAdmin) [userId: Int] {
     False => throw NotFoundError { message: "User not found" }
   }
 }
+
+void LexicalAnalyzer::ID() {
+    if (IsAlpha(symbol_) || IsDigit(symbol_)) {
+        PushChar();
+        GetChar();
+        ID();
+    } else if (word_ == "true" || word_ == "false") {
+        PushToken(TokenType::LITERAL);
+        H();
+    } else {
+        if (keywords_trie_->Contains(word_)) {
+            PushToken(TokenType::KEYWORD);
+        } else {
+            PushToken(TokenType::IDENTIFIER);
+        }
+        H();
+    }
+}
+
+console.log(12312.12312312, 123123.123123 + 4)
