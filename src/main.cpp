@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "../include/Lexer.h"
-#include "RPN2.h"
+#include "RPN.h"
 
 // Функция для получения строкового представления типа токена
 std::string tokenTypeToString(TokenType type) {
