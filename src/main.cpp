@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "../include/Lexer.h"
+#include "RPN2.h"
 
 // Функция для получения строкового представления типа токена
 std::string tokenTypeToString(TokenType type) {
@@ -122,69 +123,74 @@ std::string tokenTypeToString(TokenType type) {
 }
 
 int main() {
-  std::string code = R"(
-        // Объявление функции суммы
-        function sum(a: Int, b: Int): Int {
-            return a + b;
-        }
+  elangRPN::example();
+  // std::string code = R"(
+  //       // Объявление функции суммы
+  //       function sum(a: Int, b: Int): Int {
+  //           return a + b;
+  //       }
 
-        /* 
-           Асинхронная функция для получения данных
-        */
-        async function fetchData(url: String): Response {
-            let response = await httpGet(url);
-            return response;
-        }
+  //       /*
+  //          Асинхронная функция для получения данных
+  //       */
+  //       async function fetchData(url: String): Response {
+  //           let response = await httpGet(url);
+  //           return response;
+  //       }
 
-        // Пример использования цикла for
-        function printUsers(users: List<User>) {
-            for (user in users) {
-                println("User: " + user.name + ", ID: " + user.id);
-            }
-        }
+  //       // Пример использования цикла for
+  //       function printUsers(users: List<User>) {
+  //           for (user in users) {
+  //               println("User: " + user.name + ", ID: " + user.id);
+  //           }
+  //       }
 
-        // Пример использования цикла while
-        function countdown(start: Int) {
-            let current = start;
-            while (current > 0) {
-                println("Countdown: " + current);
-                current = current - 1;
-            }
-            println("Liftoff!");
-        }
+  //       // Пример использования цикла while
+  //       function countdown(start: Int) {
+  //           let current = start;
+  //           while (current > 0) {
+  //               println("Countdown: " + current);
+  //               current = current - 1;
+  //           }
+  //           println("Liftoff!");
+  //       }
 
-        // Пример работы с объектным литералом
-        let user = {
-            id: 1,
-            name: "Alice",
-            email: "alice@example.com"
-        };
+  //       // Пример работы с объектным литералом
+  //       let user = {
+  //           id: 1,
+  //           name: "Alice",
+  //           email: "alice@example.com"
+  //       };
 
-        // Пример работы со списковым литералом
-        let numbers = [1, 2, 3, 4, 5];
+  //       // Пример работы со списковым литералом
+  //       let numbers = [1, 2, 3, 4, 5];
 
-        // Пример работы с булевыми значениями
-        let isActive = true;
-        let isVerified = false;
+  //       // Пример работы с булевыми значениями
+  //       let isActive = true;
+  //       let isVerified = false;
 
-        // Пример использования throw
-        function createUser(name: String) {
-            if (name == "") {
-                throw BadRequestError { message: "Name cannot be empty" };
-            }
-            // Создание пользователя
-        }
-    )";
+  //       // Пример использования throw
+  //       function createUser(name: String) {
+  //           if (name == "") {
+  //               throw BadRequestError { message: "Name cannot be empty" };
+  //           }
+  //           // Создание пользователя
+  //       }
+  //   )";
 
-  Lexer lexer(code);
-  std::vector<Token> tokens = lexer.tokenize();
+  // std::string code = R"(
+  //     let x = {x: 1, y: "2"};
+  //   )";
 
-  for (const auto& token : tokens) {
-    std::cout << "Token(Type: " << tokenTypeToString(token.type)
-              << ", Value: \"" << token.value << "\""
-              << ", Line: " << token.line << ", Column: " << token.column
-              << ")\n";
-  }
+  // Lexer lexer(code);
+  // std::vector<Token> tokens = lexer.tokenize();
+
+  // for (const auto& token : tokens) {
+  //   std::cout << "Token(Type: " << tokenTypeToString(token.type)
+  //             << ", Value: \"" << token.value << "\""
+  //             << ", Line: " << token.line << ", Column: " << token.column
+  //             << ")\n";
+  // }
 
   return 0;
 }
