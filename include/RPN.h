@@ -594,9 +594,7 @@ class Interpreter {
 // Global context instance
 Context globalContext;
 
-// Example usage
 void example() {
-  // Create an interpreter instance with the global context
   Interpreter interpreter(&globalContext);
 
   // Function definition: function factorial(n) { if n <= 1 { 1 } else { n *
@@ -635,12 +633,10 @@ void example() {
   functionBody->tokens.push_back(
       Token{TokenType::ControlFlow, ControlFlowType::EndIf});
 
-  // Create function object with parameter ["n"]
   std::vector<std::string> parameters = {"n"};
   auto functionObj = std::make_shared<ElgObject>(std::make_shared<ElgPrimitive>(
       ElgPrimitive::Function("factorial", parameters, functionBody)));
 
-  // Assign function to variable "factorial": "factorial" functionObj Assign
   Expression funcDefExpr;
   funcDefExpr.tokens.push_back(
       Token{TokenType::Operand,
@@ -649,12 +645,11 @@ void example() {
   funcDefExpr.tokens.push_back(
       Token{TokenType::Operator, OperatorType::Assign});
 
-  // Evaluate the function definition
   interpreter.evaluateExpression(&funcDefExpr, &globalContext);
 
   Expression funcCallExpr;
   funcCallExpr.tokens.push_back(
-      Token{TokenType::Operand, ElgObject(std::make_shared<ElgPrimitive>(7))});
+      Token{TokenType::Operand, ElgObject(std::make_shared<ElgPrimitive>(5))});
   funcCallExpr.tokens.push_back(
       Token{TokenType::Variable, std::string("factorial")});
   funcCallExpr.tokens.push_back(
@@ -675,5 +670,4 @@ void example() {
     interpreter.evaluateExpression(&printExpr, &globalContext);
   }
 }
-
 }  // namespace elangRPN
