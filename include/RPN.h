@@ -185,12 +185,18 @@ class Interpreter {
             stack.pop_back();
             auto varNameObj = stack.back();
             stack.pop_back();
+            // printValue(varNameObj);
+            // printValue(valueObj);
+            // std::cout << *valueObj << std::endl;
+            // std::cout << "Set variable <" << varNameStr << "> with value ***"
+            //           << std::endl;
 
             auto varNamePrimitive =
                 std::get<std::shared_ptr<ElgPrimitive>>(varNameObj->value);
             if (auto varNameStr =
                     std::get_if<std::string>(&varNamePrimitive->value)) {
               context->setVariable(*varNameStr, valueObj);
+              std::cout << "Assigned value" << std::endl;
             } else {
               std::cerr << "Invalid variable name for assignment." << std::endl;
               return nullptr;
@@ -586,7 +592,7 @@ class Interpreter {
                    primitive->value)) {
       std::cout << "undefined" << std::endl;
     } else {
-      std::cout << "Unknown value" << std::endl;
+      std::cout << "[Object object]" << std::endl;
     }
   }
 };
@@ -602,6 +608,90 @@ void example() {
   // ["factorial", ["n"], function_body_expression, Assign]
 
   // Function body expression:
+  // auto mainFunction = std::make_shared<Expression>();
+  // globalContext.setVariable("i");
+
+  // Expression mainFunction;
+  // mainFunction.tokens.push_back(
+  //     Token{TokenType::Operand,
+  //           ElgObject(std::make_shared<ElgPrimitive>("testVariable"))});
+  // mainFunction.tokens.push_back(Token{
+  //     TokenType::Operand, ElgObject(std::make_shared<ElgPrimitive>("123"))});
+  // mainFunction.tokens.push_back(
+  //     Token{TokenType::Operator, OperatorType::Assign});
+
+  // mainFunction.tokens.push_back(
+  //     Token{TokenType::Operand,
+  //           ElgObject(std::make_shared<ElgPrimitive>("functionVariable"))});
+
+  // auto print123Function = std::make_shared<Expression>();
+  // print123Function->tokens.push_back(Token{
+  //     TokenType::Operand, ElgObject(std::make_shared<ElgPrimitive>("123"))});
+  // print123Function->tokens.push_back(
+  //     Token{TokenType::Variable, std::string("print")});
+  // print123Function->tokens.push_back(
+  //     Token{TokenType::Operator, OperatorType::FunctionCall});
+
+  // mainFunction.tokens.push_back(
+  //     Token{TokenType::Operand,
+  //           ElgObject(std::make_shared<ElgPrimitive>("print123"))});
+  // mainFunction.tokens.push_back(
+  //     Token{TokenType::Operand,
+  //           ElgObject(std::make_shared<ElgPrimitive>(
+  //               ElgPrimitive::Function("print123", {}, print123Function)))});
+  // mainFunction.tokens.push_back(
+  //     Token{TokenType::Operator, OperatorType::Assign});
+
+
+  // mainFunction.tokens.push_back(
+  //   Token{TokenType::Variable, std::string("print123")}
+  // );
+  // mainFunction.tokens.push_back(
+  //   Token{TokenType::Variable, std::string("print")}
+  // );
+  // mainFunction.tokens.push_back(
+  //   Token{TokenType::Operator, OperatorType::FunctionCall}
+  // );
+  
+
+  // interpreter.evaluateExpression(&mainFunction, &globalContext);
+
+  // Expression printExpr;
+  // printExpr.tokens.push_back(
+  //     Token{TokenType::Variable, std::string("testVariable")});
+  // printExpr.tokens.push_back(Token{
+  //     TokenType::Operand,
+  //     ElgObject(std::make_shared<ElgPrimitive>("print"))});
+  // printExpr.tokens.push_back(
+  //     Token{TokenType::Operator, OperatorType::FunctionCall});
+
+  // interpreter.evaluateExpression(&printExpr, &globalContext);
+  // Expression funcCallExpr;
+  // funcCallExpr.tokens.push_back(
+  //     Token{TokenType::Operand,
+  //     ElgObject(std::make_shared<ElgPrimitive>(5))});
+  // funcCallExpr.tokens.push_back(
+  //     Token{TokenType::Variable, std::string("factorial")});
+  // funcCallExpr.tokens.push_back(
+  //     Token{TokenType::Operator, OperatorType::FunctionCall});
+
+  // auto funcCallResult =
+  //     interpreter.evaluateExpression(&funcCallExpr, &globalContext);
+
+  // auto funcCallResult =
+  //     interpreter.evaluateExpression(&funcCallExpr, &globalContext);
+
+  // if (funcCallResult) {
+
+  // } else {
+  //   std::cout << "Not printed" << std::endl;
+  // }
+
+  // mainFunction->tokens.push_back(
+  //     Token{TokenType::Operand},
+  //     ElgObject(std::make_shared<ElgPrimitive>("print")));
+
+  
   auto functionBody = std::make_shared<Expression>();
   // n 1 <= If
   functionBody->tokens.push_back(Token{TokenType::Variable, std::string("n")});
