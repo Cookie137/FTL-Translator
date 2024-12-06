@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "../include/Lexer.h"
+#include "../include/Syntaxer.h"
 #include "RPN.h"
 
 // Функция для получения строкового представления типа токена
@@ -123,7 +124,28 @@ std::string tokenTypeToString(TokenType type) {
 }
 
 int main() {
-  elangRPN::example();
+    std::vector<Token> tokens = {
+            {TokenType::KW_FUNCTION, "function", 1, 1},
+            {TokenType::Identifier, "main", 1, 10},
+            {TokenType::LPAREN, "(", 1, 15},
+            {TokenType::RPAREN, ")", 1, 16},
+            {TokenType::LBRACE, "{", 1, 18},
+            {TokenType::KW_RETURN, "return", 2, 3},
+            {TokenType::IntegerLiteral, "42", 2, 10},
+            {TokenType::SEMICOLON, ";", 2, 12},
+            {TokenType::RBRACE, "}", 3, 1},
+            {TokenType::EndOfFile, "", 3, 2}
+    };
+
+    try {
+        SyntaxAnalyzer analyzer(tokens);
+        analyzer.analyze();
+    } catch (const SyntaxError& e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+  // elangRPN::example();
+
   // std::string code = R"(
   //       // Объявление функции суммы
   //       function sum(a: Int, b: Int): Int {
