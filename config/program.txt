@@ -1,4 +1,5 @@
-// DELETE запрос с middleware auth, logRequest и validateAdmin (удаление пользователя доступно только администратору)
+// DELETE query from middleware auth, logRequest and validateAdmin (deleting a user is only available to the administrator)
+
 DELETE users.delete (auth, logRequest, validateAdmin) [userId: Int] {
   200: {
     ok: true,
@@ -11,23 +12,3 @@ DELETE users.delete (auth, logRequest, validateAdmin) [userId: Int] {
     False => throw NotFoundError { message: "User not found" }
   }
 }
-
-void LexicalAnalyzer::ID() {
-    if (IsAlpha(symbol_) || IsDigit(symbol_)) {
-        PushChar();
-        GetChar();
-        ID();
-    } else if (word_ == "true" || word_ == "false") {
-        PushToken(TokenType::LITERAL);
-        H();
-    } else {
-        if (keywords_trie_->Contains(word_)) {
-            PushToken(TokenType::KEYWORD);
-        } else {
-            PushToken(TokenType::IDENTIFIER);
-        }
-        H();
-    }
-}
-
-console.log(12312.12312312, 123123.123123 + 4)

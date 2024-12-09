@@ -1,18 +1,42 @@
-// Token.h
-#ifndef TOKEN_H
-#define TOKEN_H
+#ifndef TRANSLATOR_TOKEN_H
+#define TRANSLATOR_TOKEN_H
 
-#include "TokenType.h"
+#include <iostream>
+#include <string>
 
-struct Token {
-  TokenType type;
-  std::string value;
-  int line;
-  int column;
-
-  Token(TokenType type = TokenType::Unknown, const std::string& value = "",
-        int line = 0, int column = 0)
-      : type(type), value(value), line(line), column(column) {}
+enum class TokenType {
+    KEYWORD,
+    IDENTIFIER,
+    LITERAL,
+    OPERATOR,
+    PUNCTUATOR,
+    COMMENT,
+    ERROR,
+    NUMBER,
+    FLOAT,
+    STRING,
 };
 
-#endif  // TOKEN_H
+class Token {
+ public:
+    Token(TokenType type, std::string word, int line, int column);
+    TokenType GetType();
+    std::string GetValue();
+    int GetLine();
+    int GetColumn();
+    void SetType(TokenType type);
+    void SetValue(std::string value);
+    void SetLine(int line);
+    void SetColumn(int column);
+    void PrintInfo();
+
+ private:
+    TokenType type_;
+    std::string value_;
+    int line_;
+    int column_;
+};
+
+std::string to_string(TokenType type);
+
+#endif //TRANSLATOR_TOKEN_H

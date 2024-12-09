@@ -44,15 +44,6 @@
         "ostream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp",
-        "variant": "cpp",
-        "map": "cpp",
-        "set": "cpp",
-        "unordered_set": "cpp",
-        "optional": "cpp"
-    },
-    "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
-        "clang-diagnostic-error",
-        "clang-diagnostic-error"
-    ]
+        "typeinfo": "cpp"
+    }
 }

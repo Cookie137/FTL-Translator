@@ -1,103 +1,129 @@
 # FTL-Translator
 
-**Грамматика v1.0**
-```
-<Программа> → { <Оператор> }
+**Грамматика v2.0**
+```scala
+Program = {Statement}
 
-<Оператор> → <Определение функции>
-                        | <Функция IO>
-                        | <Объявление переменных>
-                        | <Присваивание>
-                        | <Выражение> “;”
-                        | <Оператор if>
-                        | <Оператор switch>
-                        | <Цикл while>
-                        | <Цикл for>
-                        | <break>
-                        | <continue> 
-                        | <return>
-                        | “;”
+Statement = FunctionDeclaration
+          | VariableDeclaration
+          | StructDeclaration
+          | ExceptionDeclaration
+          | MiddlewareDeclaration
+          | EndpointDeclaration
+          | ApplyMiddleware
+          | ExpressionStatement
+          | ThrowStatement
+          | ForLoop
+          | WhileLoop
 
-<Определение функции> → "function" <Идентификатор> "(" <Список параметров> ")" ":" [<Тип> | “Void”] "{" { <Оператор> } "}"
+FunctionDeclaration = ["async"] "function" Identifier "(" [Parameters] ")" [":" Type] "{" {Statement} "}"
 
-<Список параметров> → [ <Параметр> { "," <Параметр> } ]
+Parameters = Parameter {"," Parameter}
+Parameter = Identifier ":" Type
 
-<Параметр> → <Тип> <Идентификатор>
+VariableDeclaration = ("let" | "var") Identifier "=" Expression
 
-<Тип> → "Int" | "Float" | "Bool" | "Char" | “String” | "Array" "<" <Тип> ">"
+StructDeclaration = "struct" Identifier "{" {StructField} "}"
+StructField = Identifier ":" Type [","]
 
-<Функция IO> → "Read" "(" <Список идентификаторов> ")" “;”
-                           | “Readln” "(" <Список идентификаторов> ")" “;”
-                           | "Write" "(" <Список идентификаторов> ")" “;”
-                           | "Writeln" "(" <Список идентификаторов> ")" “;”
+ExceptionDeclaration = "exception" Identifier "{" {ExceptionField} "}"
+ExceptionField = Identifier ":" Type [","]
 
-<Список идентификаторов> → <Идентификатор> { "," <Идентификатор> }
+MiddlewareDeclaration = "middleware" Identifier "=" "(" [MiddlewareParameters] ")" "=>" "{" {Statement} "}"
 
-<Объявление переменных> → <Тип> <Список переменных>
+MiddlewareParameters = Identifier {"," Identifier}
 
-<Список переменных> → <Переменная> { "," <Переменная> }
+EndpointDeclaration = HTTPMethod Identifier "(" [MiddlewareList] ")" [EndpointParams] "{" 
+                        [ResponseTypes] 
+                      "}" "{" {Statement} "}"
 
-<Переменная> → <Идентификатор> | <Идентификатор> "=" <Выражение>
+HTTPMethod = "GET" | "POST" | "PUT" | "DELETE"
 
-<Присваивание> → <Идентификатор> "=" <Выражение>
+MiddlewareList = Identifier {"," Identifier}
 
-<Выражение> → <Унарное выражение> | <Бинарное выражение> | <Операнд>
+EndpointParams = "[" ParameterList "]"
+ParameterList = Parameter {"," Parameter}
 
-<Унарное выражение> → <Унарный оператор> <Выражение>
+ResponseTypes = {StatusCode ":" ResponseBody}
+StatusCode = Integer
+ResponseBody = "{" {ResponseField} "}"
+ResponseField = Identifier ":" Type [","]
 
-<Бинарное выражение> → <Выражение> <Бинарный оператор> <Выражение>
+ApplyMiddleware = "apply" Identifier "->" EndpointPattern
+EndpointPattern = Identifier ("." Identifier)* {"," Identifier ("." Identifier)*}
 
-<Унарный оператор> → “!” | “+” | “-“
+ExpressionStatement = Expression
 
-<Бинарный оператор> → "*" | "/" | "%"
-                    | "+" | "-" |
-                    | ">" | "<" | ">=" | "<="
-                    | "==" | "!="
-                    | "&"
-                    | "^"
-                    | "|"
-                    | "->"
+ThrowStatement = "throw" Expression
 
-<Операнд> → <Идентификатор> | <Литерал> | "(" <Выражение> ")"
+ForLoop = "for" "(" Identifier "in" Expression ")" "{" {Statement} "}"
 
-<Оператор if> → "if" "(" <Выражение> ")" "{" { <Оператор> } "}"
-              { "elif" "(" <Выражение> ")" "{" { <Оператор> } "}" }
-              [ "else" "{" { <Оператор> } "}" ]
+WhileLoop = "while" "(" Expression ")" "{" {Statement} "}"
 
-<Оператор switch> → "switch" "(" <Выражение> ")" "{" { <Блок case> } "}"
+Expression = Assignment
+           | LogicalOr
 
-<Блок case> → "[" <Литерал> "]" "{" { <Оператор> } "}"
+Assignment = Identifier "=" Expression
 
-<Цикл while> → "while" "(" <Выражение> ")" "{" { <Оператор> } "}"
+LogicalOr = LogicalAnd {"||" LogicalAnd}
 
-<Цикл for> → "for" "(" <Объявление переменных> ";" <Выражение> ";" <Присваивание> ")" "{" { <Оператор> } "}"
+LogicalAnd = Equality {"&&" Equality}
 
-<break> → “break” “;”
+Equality = Relational {("==" | "!=") Relational}
 
-<continue> → “continue” “;”
+Relational = Additive {("<" | ">" | "<=" | ">=") Additive}
 
-<return> → "return" [ <Выражение> ] “;”
-```
+Additive = Multiplicative {("+" | "-") Multiplicative}
 
+Multiplicative = Unary {("*" | "/" | "%") Unary}
 
+Unary = ("!" | "-" ) Unary
+      | Primary
 
-```
-<Program> -> {<Operator>}
+Primary = Literal
+        | Identifier
+        | "(" Expression ")"
+        | FunctionExpression
+        | LambdaExpression
+        | MatchExpression
+        | CallExpression
+        | AwaitExpression
 
-*<Operator>*:
-    <FunctionDefinition> |
-    <IfStatement> |
-    <ForStatement> |
-    <WhileStatement> |
-    <SwitchStatement> |
-    <Expression> |
-    <VariableDeclaration>
+FunctionExpression = "function" "(" [Parameters] ")" "{" {Statement} "}"
 
+LambdaExpression = "(" [Parameters] ")" "=>" Expression
 
-*FunctionDefinition*:
-'function' '(' <FunctionParams> ')' [ <TypeDeclaration> ] '{'
-    {<Expression> | <VariableDeclaration>}
-'}'
+MatchExpression = "match" Expression "{" {MatchCase} "}"
 
-*Expression*:
+MatchCase = Pattern "=>" Expression
+
+CallExpression = Identifier "(" [Arguments] ")"
+
+Arguments = Expression {"," Expression}
+
+Pattern = Literal | Identifier | "_"
+
+Literal = Integer | String | Boolean | ListLiteral | ObjectLiteral
+
+ListLiteral = "[" [ExpressionList] "]"
+ExpressionList = Expression {"," Expression}
+
+ObjectLiteral = "{" [ObjectFieldList] "}"
+ObjectFieldList = ObjectField {"," ObjectField}
+ObjectField = Identifier ":" Expression
+
+Type = "number" | "string" | "boolean" | "list" "<" Type ">"
+     | Identifier
+     | FunctionType
+
+FunctionType = "(" [TypeList] ")" "->" Type
+TypeList = Type {"," Type}
+
+Identifier = /[a-zA-Z_][a-zA-Z0-9_]*/
+
+Integer = /[0-9]+/
+
+String = /"([^"\\]|\\.)*"/
+
+Boolean = "true" | "false"
 ```
